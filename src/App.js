@@ -1,26 +1,25 @@
 import { useState } from 'react';
 import './App.css';
-import { AddNewMeal } from './components/AddNewMeal';
 import { Header } from './components/Header';
-import {Plan} from './components/Plan';
-import { ChakraProvider, Button } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react'
+import { HomeSignedIn } from './components/HomeSignedIn';
+import { HomeNotSignedIn } from './components/HomeNotSignedIn';
 
 function App() {
-  const [clicked, setClicked] = useState(false);
-  const hide = () =>{
-    setClicked(false);
+  const [signInValue, setIn] = useState(false); //signInValue => true if signed in and false if not
+
+  const SignIn = () =>{
+    setIn(true);
   }
+  const SignOut = () =>{
+    setIn(false);
+}
 
   return (
     <ChakraProvider>
       <div className="App">
-        <Header hide= {hide}/>
-        <Plan />
-        <div>
-          {clicked ? <AddNewMeal hide= {hide}/> : <div>
-            <Button colorScheme='blue' onClick={()=> setClicked(true)}>Add new meal</Button>
-        </div>}
-        </div>
+        <Header signIn={SignIn} loginState={signInValue} signOut={SignOut}/>
+        {signInValue ? <HomeSignedIn name="Karo" signOut={SignOut}/> : <HomeNotSignedIn signIn={SignIn}/>}
       </div>
     </ChakraProvider>
   );
