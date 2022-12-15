@@ -1,24 +1,28 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import { AddNewMeal } from './components/AddNewMeal';
+import { Header } from './components/Header';
+import {Plan} from './components/Plan';
+import { ChakraProvider, Button } from '@chakra-ui/react'
 
 function App() {
+  const [clicked, setClicked] = useState(false);
+  const hide = () =>{
+    setClicked(false);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ChakraProvider>
+      <div className="App">
+        <Header hide= {hide}/>
+        <Plan />
+        <div>
+          {clicked ? <AddNewMeal hide= {hide}/> : <div>
+            <Button colorScheme='blue' onClick={()=> setClicked(true)}>Add new meal</Button>
+        </div>}
+        </div>
+      </div>
+    </ChakraProvider>
   );
 }
 
