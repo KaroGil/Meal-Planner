@@ -1,0 +1,9 @@
+- Make an user system
+    - login /signup
+    - save meal plan (in own database set or ?)
+    - user (name, food prefrences, ...)
+- make sorting by: 
+    - type
+    - allergies
+    - ...
+    available
