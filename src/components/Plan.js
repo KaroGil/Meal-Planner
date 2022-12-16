@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { Day } from './Day';
 import { Form } from './Form';
-import firestore from 'firebase/compat/firestore';
-import { firebase, db } from './firebase';
-import { Card, CardHeader, CardBody, CardFooter, Stack, Heading, Text, Divider, ButtonGroup, Button,
-    SimpleGrid} from '@chakra-ui/react'
+import { firebase} from './firebase';
+import { Card, CardBody, CardFooter, Stack, Heading, Text, Divider, ButtonGroup, Button, Progress} from '@chakra-ui/react'
 
 export const Plan = () => {
-    const [monday, setMonday] = useState({ name: "Monday", meal: "Steak", type: "MeatLover" });
+    const [monday, setMonday] = useState({ name: "Monday", meal: "", type: "" });
     const [tuesday, setTuesday] = useState({ name: "Tuesday", meal: "", type: "" });
     const [wednesday, setWednesday] = useState({ name: "Wednesday", meal: "", type: "" });
     const [thursday, setThursday] = useState({ name: "Thursday", meal: "", type: "" });
@@ -78,20 +75,26 @@ export const Plan = () => {
 
         setRandom(meals[Math.floor(Math.random() * meals.length)]);
         setDay(day, { name: day, meal: randomMeal.Meal, type: randomMeal.Type });
-
     }
+
+    const [s, setS] = useState(0);
 
 
     return (
-        <>
+        <> <div>
+            <br/>
+            <Text><b>Week planned:</b></Text>
+            <Progress hasStripe value={s} />
+            </div>
+            <br/>
             <div className='edit'>
                 <div>
                     {edit ? <Form day={today} handle={setDay} hide={hide} /> : 
                     <div className='layout'>
                     {days.map((day) =>
-                            <Card maxW='sm'>
-                                    <CardBody>
-                                        
+                        <div key={day.key}>
+                            <Card maxW='sm' minH='xs' maxH='sm'>
+                                    <CardBody>    
                                         <Stack mt='6' spacing='3'>
                                             <Heading size='md'>{day.name}</Heading>
                                             <Text fontSize='sm'>
@@ -114,6 +117,7 @@ export const Plan = () => {
                                         </ButtonGroup>
                                     </CardFooter>
                             </Card>
+                        </div>
                         )}
                     </div>
                     

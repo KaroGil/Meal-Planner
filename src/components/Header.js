@@ -1,5 +1,7 @@
 import React from 'react';
 import {Button } from '@chakra-ui/react'
+import { signInWithGoogle } from './firebase';
+
 
 export const Header = ({signIn, signOut, loginState}) => {
     return (
