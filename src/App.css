@@ -63,4 +63,10 @@ select{
   flex-wrap: wrap;
   gap: 10px;
   
+} 
+
+.footer{
+  margin: 1%;
+  margin-top: 10%;
+
 }

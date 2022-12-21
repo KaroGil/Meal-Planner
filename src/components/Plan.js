@@ -1,6 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form } from './Form';
-import { firebase} from './firebase';
+import { firebase, auth} from './firebase';
+import { getDatabase, ref, set } from "firebase/database";
+import {
+    collection,
+    getDocs,
+    addDoc,
+    updateDoc,
+    deleteDoc,
+    doc,
+  } from "firebase/firestore";
 import { Card, CardBody, CardFooter, Stack, Heading, Text, Divider, ButtonGroup, Button, Progress} from '@chakra-ui/react'
 
 export const Plan = () => {
@@ -14,6 +23,8 @@ export const Plan = () => {
 
     const [edit, setEdit] = useState(false);
     const [today, setToday] = useState("default");
+    const [saved, setSaved] = useState(false);
+    const [userInfo, setUserInfo] = useState([]);
 
     const hide = () => {
         setEdit(false);
@@ -58,11 +69,13 @@ export const Plan = () => {
         setToday(day);
     }
 
+    const db = firebase.firestore();        
+    const usersCollectionRef = collection(db, 'users');
+
     const Random = (day) => {
         //all meals in the db to an array and then pic a random item from that array
 
         const getMealsFromFirebase = [];
-        const db = firebase.firestore();
         const sub = db.collection('food').onSnapshot((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 getMealsFromFirebase.push({
@@ -77,14 +90,106 @@ export const Plan = () => {
         setDay(day, { name: day, meal: randomMeal.Meal, type: randomMeal.Type });
     }
 
-    const [s, setS] = useState(0);
+    const reset = async (id) => {
+        if(saved['state'] == 'true'){
+            const userDoc = doc(db, 'users', id);
+            await deleteDoc(userDoc);
 
+            setMonday({ name: "Monday", meal: "", type: "" });
+            setTuesday({ name: "Tuesday", meal: "", type: "" });
+            setWednesday({ name: "Wednesday", meal: "", type: "" });
+            setThursday({ name: "Thursday", meal: "", type: "" });
+            setFriday({ name: "Friday", meal: "", type: "" });
+            setSaturday({ name: "Saturday", meal: "", type: "" });
+            setSunday({ name: "Sunday", meal: "", type: "" });
+
+            setSaved(false);
+            setLoading(true);
+        }else{
+            console.log("Nothing to delete.")
+        }
+    }
+
+    const createUserData = async () => {
+        await addDoc(usersCollectionRef, 
+            {
+                name: auth.currentUser.displayName,
+                monday: monday,
+                tuesday: tuesday,
+                wednesday: wednesday,
+                thursday: thursday,
+                friday: friday,
+                saturday: saturday,
+                sunday: sunday
+            });
+
+    }
+
+    const updateUserData = async (id) => {
+        const userDoc = doc(db, 'users', id);
+        const newFields = {
+            monday: monday,
+            tuesday: tuesday,
+            wednesday: wednesday,
+            thursday: thursday,
+            friday: friday,
+            saturday: saturday,
+            sunday: sunday}
+        await updateDoc(userDoc, newFields);
+    }
+
+    const save = async () => {
+
+        if(saved['state'] == 'true'){
+            //update
+            updateUserData(saved['id']);
+            console.log("updated!");
+        }else{
+            //create
+            createUserData();
+            console.log("saved new!");
+        }
+
+        setLoading(true);
+
+    }
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const users = [];
+        const sub = db.collection('users').onSnapshot((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                if(doc.data()['name']==auth.currentUser.displayName){
+                    users.push({
+                        ...doc.data(),
+                        key: doc.id,
+                    });
+                }
+            });
+            setUserInfo(users);
+            setLoading(false);
+            if(userInfo.length > 0){
+                const dict = userInfo[0];
+                setMonday({ name: "Monday", meal:  dict['monday']['meal'], type:  dict['monday']['type'] });
+                setTuesday({ name: "Tuesday", meal: dict['tuesday']['meal'], type: dict['tuesday']['type'] });
+                setWednesday({ name: "Wednesday", meal: dict['wednesday']['meal'], type: dict['wednesday']['type'] });
+                setThursday({ name: "Thursday", meal: dict['thursday']['meal'], type: dict['thursday']['type'] });
+                setFriday({ name: "Friday", meal: dict['friday']['meal'], type: dict['friday']['type'] });
+                setSaturday({ name: "Saturday", meal: dict['saturday']['meal'], type: dict['saturday']['type'] });
+                setSaved({state: 'true', id: dict['key']});
+            }else{console.log("Nothing saved in database, so nothing to get.")}
+        });
+        return () => sub();
+    }, [loading]);
+
+    if (loading) {
+        return <h1>loading firebase data for user... </h1>
+    }
 
     return (
         <> <div>
             <br/>
             <Text><b>Week planned:</b></Text>
-            <Progress hasStripe value={s} />
+            <Progress hasStripe value={50} />
             </div>
             <br/>
             <div className='edit'>
@@ -123,6 +228,11 @@ export const Plan = () => {
                     
                     }
                 </div>
+            </div>
+            <div>
+                <br/>
+                <Button colorScheme='blue' onClick={() => save()}>Save Meal Plan</Button>
+                <Button colorScheme='blue' onClick={() => reset(saved['id'])}>Reset Meal Plan</Button>
             </div>
         </>
     );

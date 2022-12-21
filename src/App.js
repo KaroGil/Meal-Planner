@@ -10,6 +10,7 @@ import {getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged} from '
 
 
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { Footer } from './components/Footer';
 
 
 
@@ -31,6 +32,7 @@ function App() {
       <div className="App">
         <Header signIn={SignIn} loginState={user} signOut={SignOut}/>
         {user ? <HomeSignedIn name={auth.currentUser.displayName} signOut={SignOut}/> : <HomeNotSignedIn signIn={SignIn}/>}
+        <Footer />
       </div>
     </ChakraProvider>
   );

@@ -14,7 +14,7 @@ export const Form = ({ day, handle, hide }) => {
     useEffect(() => {
         const getMealsFromFirebase = [];
         const db = firebase.firestore();
-        const sub = db.collection('food').orderBy('Type').onSnapshot((querySnapshot) => {
+        const sub = db.collection('food').orderBy('Meal').onSnapshot((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 getMealsFromFirebase.push({
                     ...doc.data(),
@@ -32,12 +32,13 @@ export const Form = ({ day, handle, hide }) => {
     }
 
 
+
     return (
         <div>
             <Button colorScheme='blue' size='sm' onClick={() => hide()}>Back</Button>
             <div className='container'>
                 {meals.length > 0 ? (
-                    meals.map((meal) =>
+                    meals.map((meal) => 
                         <div key={meal.key}>
                             <Card maxW='sm' minW='xs' width='xs'>
                                 <CardBody>
