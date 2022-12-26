@@ -1,6 +1,7 @@
 //Imports
 import React from 'react';
-import { Button, Switch, FormControl, FormLabel, useColorMode } from '@chakra-ui/react'
+import { Button, Switch, FormControl, FormLabel, useColorMode} from '@chakra-ui/react'
+import { SunIcon, MoonIcon } from '@chakra-ui/icons'
 
 
 /**
@@ -31,19 +32,16 @@ export const Header = ({ signIn, signOut, loginState }) => {
                             <Switch id='email-alerts' />
                         </FormControl> */}
                         <div>
-                            <FormControl display='flex' alignItems='center'>
+                            <FormControl display='flex' alignItems='center' justifyContent='space-evenly'>
                                 <FormLabel htmlFor='email-alerts' mb='0'>
-                                    Light
+                                    <MoonIcon color='blue.400'/>
                                 </FormLabel>
                                 <Switch id='email-alerts' onChange={toggleColorMode} />
                                 <FormLabel htmlFor='email-alerts' mb='0'>
-                                Dark
+                                    <SunIcon color='yellow.500'/>
                                 </FormLabel>
                             </FormControl>
                         </div>
-                        {/* <Button onClick={toggleColorMode}>
-                            {colorMode === 'light' ? 'Dark' : 'Light'}
-                        </Button> */}
                     </div>
                     : <Button colorScheme='red' onClick={() => signIn()}>Sign in</Button>}
             </div>
