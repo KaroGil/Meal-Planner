@@ -193,7 +193,7 @@ export const Plan = () => {
             </div>
             <br/>
             <div className='edit'>
-                <div>
+                <Stack w="100%">
                     {edit ? <Form day={today} handle={setDay} hide={hide} /> : 
                     <div className='layout'>
                     {days.map((day) =>
@@ -227,12 +227,14 @@ export const Plan = () => {
                     </div>
                     
                     }
-                </div>
+                </Stack>
             </div>
             <div>
                 <br/>
-                <Button colorScheme='blue' onClick={() => save()}>Save Meal Plan</Button>
-                <Button colorScheme='blue' onClick={() => reset(saved['id'])}>Reset Meal Plan</Button>
+                <Stack direction="row">
+                    <Button colorScheme='blue' onClick={() => save()}>Save Meal Plan</Button>
+                    <Button colorScheme='blue' onClick={() => reset(saved['id'])}>Reset Meal Plan</Button>
+                </Stack>
             </div>
         </>
     );

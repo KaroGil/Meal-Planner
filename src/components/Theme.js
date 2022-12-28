@@ -1,4 +1,4 @@
-// theme.js
+// theme.js for dark mode 
 
 // 1. import `extendTheme` function
 import { extendTheme } from '@chakra-ui/react'
