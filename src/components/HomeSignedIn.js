@@ -3,7 +3,7 @@ import { AddNewMeal } from './AddNewMeal';
 import {Plan} from './Plan';
 import { Button } from '@chakra-ui/react'
 
-export const HomeSignedIn = ({name,signOut}) => {
+export const HomeSignedIn = ({name}) => {
     const [clicked, setClicked] = useState(false);
     const hide = () =>{
         setClicked(false);
