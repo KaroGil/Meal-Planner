@@ -21,6 +21,11 @@ export const Plan = () => {
     const [saturday, setSaturday] = useState({ name: "Saturday", meal: "", type: "" });
     const [sunday, setSunday] = useState({ name: "Sunday", meal: "", type: "" });
 
+    const [currentHover, setCurrentHover] = useState({ name: "", meal: "", type: "" });
+    const [savedHover, setSavedHover] = useState({ name: "", meal: "", type: "" });
+
+
+
     const [edit, setEdit] = useState(false);
     const [today, setToday] = useState("default");
     const [saved, setSaved] = useState(false);
@@ -201,14 +206,17 @@ export const Plan = () => {
     }
 
 
-
     //trying to do draggable
-    function MouseOver(event) {
-        console.log("over");   
 
+
+
+    function MouseOver(d) {
+        console.log("over");   
+        setCurrentHover({ name: d.name, meal: d.meal, type: d.type });
     }
-    function MouseOut(event){
-        console.log("out");
+    function MouseOut(d){
+        console.log("out" + d.name);
+        setSavedHover({ name: d.name, meal: d.meal, type: d.type });
     }
 
     return (
@@ -221,11 +229,11 @@ export const Plan = () => {
             <div className='edit'>
                 <Stack w="100%">
                     {edit ? <Form day={today} handle={setDay} hide={hide} /> : 
-                    <div className='layout' onMouseOver={MouseOver()} onMouseOut={MouseOut()}>
+                    <div className='layout'>
                     {days.map((day) =>
-                        <div key={day.key} className='drag'>
+                        <div key={day.key} className='drag' draggable onDragStart={()=>MouseOver()} onDragEnd={()=> MouseOut()}>
                             <Card maxW='sm' minH='xs' maxH='sm'>
-                                    <CardBody>    
+                                    <CardBody >    
                                         <Stack mt='6' spacing='3'>
                                             <Heading size='md'>{day.name}</Heading>
                                             <Text fontSize='sm'>

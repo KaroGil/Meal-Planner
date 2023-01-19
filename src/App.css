@@ -73,4 +73,5 @@ select{
 
 .drag:hover{
   background-color: rgb(234, 232, 232);
+  cursor: move;
 }
