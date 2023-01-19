@@ -75,16 +75,16 @@ export const Plan = () => {
     const Random = (day) => {
         //all meals in the db to an array and then pic a random item from that array
 
-        const getMealsFromFirebase = [];
-        const sub = db.collection('food').onSnapshot((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                getMealsFromFirebase.push({
-                    ...doc.data(),
-                    key: doc.id,
-                });
-            });
-            setMeals(getMealsFromFirebase);
-        });
+        // const getMealsFromFirebase = [];
+        // const sub = db.collection('food').onSnapshot((querySnapshot) => {
+        //     querySnapshot.forEach((doc) => {
+        //         getMealsFromFirebase.push({
+        //             ...doc.data(),
+        //             key: doc.id,
+        //         });
+        //     });
+        //     setMeals(getMealsFromFirebase);
+        // });
 
         setRandom(meals[Math.floor(Math.random() * meals.length)]);
         setDay(day, { name: day, meal: randomMeal.Meal, type: randomMeal.Type });
@@ -153,8 +153,23 @@ export const Plan = () => {
         setLoading(true);
 
     }
+
+    //USE-EFFECT
     const [loading, setLoading] = useState(true);
+
     useEffect(() => {
+        //foods
+        const getMealsFromFirebase = [];
+        const sub1 = db.collection('food').onSnapshot((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                getMealsFromFirebase.push({
+                    ...doc.data(),
+                    key: doc.id,
+                });
+            });
+            setMeals(getMealsFromFirebase);
+        });
+        //users
         const users = [];
         const sub = db.collection('users').onSnapshot((querySnapshot) => {
             querySnapshot.forEach((doc) => {
@@ -185,6 +200,17 @@ export const Plan = () => {
         return <h1>loading firebase data for user... </h1>
     }
 
+
+
+    //trying to do draggable
+    function MouseOver(event) {
+        console.log("over");   
+
+    }
+    function MouseOut(event){
+        console.log("out");
+    }
+
     return (
         <> <div>
             <br/>
@@ -195,9 +221,9 @@ export const Plan = () => {
             <div className='edit'>
                 <Stack w="100%">
                     {edit ? <Form day={today} handle={setDay} hide={hide} /> : 
-                    <div className='layout'>
+                    <div className='layout' onMouseOver={MouseOver()} onMouseOut={MouseOut()}>
                     {days.map((day) =>
-                        <div key={day.key}>
+                        <div key={day.key} className='drag'>
                             <Card maxW='sm' minH='xs' maxH='sm'>
                                     <CardBody>    
                                         <Stack mt='6' spacing='3'>
