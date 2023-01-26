@@ -210,13 +210,24 @@ export const Plan = () => {
 
 
 
-    function MouseOver(d) {
+    function start(d) {
         console.log("over");   
         setCurrentHover({ name: d.name, meal: d.meal, type: d.type });
     }
-    function MouseOut(d){
+    function end(d){
         console.log("out" + d.name);
-        setSavedHover({ name: d.name, meal: d.meal, type: d.type });
+        replace(currentHover,d);
+    }
+
+    const dragOver = (d) => {
+        setCurrentHover({ name: d.name, meal: d.meal, type: d.type });
+    }
+
+    const replace = (dayFrom, dayTo) => {
+        //implement this just the correct way with state hooks
+        // temp = dayTo;
+        // dayTo = dayFrom;
+        // dayFrom = temp;
     }
 
     return (
@@ -231,7 +242,7 @@ export const Plan = () => {
                     {edit ? <Form day={today} handle={setDay} hide={hide} /> : 
                     <div className='layout'>
                     {days.map((day) =>
-                        <div key={day.key} className='drag' draggable onDragStart={()=>MouseOver()} onDragEnd={()=> MouseOut()}>
+                        <div key={day.key} className='drag' draggable onDragStart={()=>start()} onDragEnd={()=> end(day)} onDragOver={()=> dragOver(day)}>
                             <Card maxW='sm' minH='xs' maxH='sm'>
                                     <CardBody >    
                                         <Stack mt='6' spacing='3'>
