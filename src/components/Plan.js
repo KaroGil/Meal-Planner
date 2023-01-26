@@ -224,10 +224,8 @@ export const Plan = () => {
     }
 
     const replace = (dayFrom, dayTo) => {
-        //implement this just the correct way with state hooks
-        // temp = dayTo;
-        // dayTo = dayFrom;
-        // dayFrom = temp;
+        setDay(dayFrom.name,{ name: dayFrom.name, meal: dayTo.meal, type: dayTo.type });
+        setDay(dayTo.name,{ name: dayTo.name, meal: dayFrom.meal, type: dayFrom.type });
     }
 
     return (
