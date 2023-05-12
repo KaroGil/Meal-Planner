@@ -241,7 +241,7 @@ export const Plan = () => {
                     <div className='layout'>
                     {days.map((day) =>
                         <div key={day.key} className='drag' draggable onDragStart={()=>start()} onDragEnd={()=> end(day)} onDragOver={()=> dragOver(day)}>
-                            <Card maxW='sm' minH='xs' maxH='sm'>
+                            <Card maxW='m' minH='xs' maxH='m'>
                                     <CardBody >    
                                         <Stack mt='6' spacing='3'>
                                             <Heading size='md'>{day.name}</Heading>
