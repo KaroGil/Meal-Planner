@@ -13,7 +13,7 @@ export const HomeSignedIn = ({name, SignIn, user, SignOut}) => {
     }
   return (
     <div>
-        <Header signIn={SignIn} loginState={true} signOut={SignOut} name={name} isClicked={click} hide={hide}/>
+        <Header signIn={SignIn} loginState={true} signOut={SignOut} name={name} isClicked={click} hide={hide} user={user}/>
         <h1>Welcome  {name}!</h1>
         <div>
           {clicked ? <AddNewMeal hide= {hide}/> : <Plan />}

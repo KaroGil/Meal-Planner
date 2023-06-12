@@ -34,8 +34,6 @@ export const Plan = () => {
     const [currentHover, setCurrentHover] = useState({ name: "", meal: "", type: "" });
     const [savedHover, setSavedHover] = useState({ name: "", meal: "", type: "" });
 
-
-
     const [edit, setEdit] = useState(false);
     const [today, setToday] = useState("default");
     const [saved, setSaved] = useState(false);
@@ -88,19 +86,6 @@ export const Plan = () => {
     const usersCollectionRef = collection(db, 'users');
 
     const Random = (day) => {
-        //all meals in the db to an array and then pic a random item from that array
-
-        // const getMealsFromFirebase = [];
-        // const sub = db.collection('food').onSnapshot((querySnapshot) => {
-        //     querySnapshot.forEach((doc) => {
-        //         getMealsFromFirebase.push({
-        //             ...doc.data(),
-        //             key: doc.id,
-        //         });
-        //     });
-        //     setMeals(getMealsFromFirebase);
-        // });
-
         setRandom(meals[Math.floor(Math.random() * meals.length)]);
         setDay(day, { name: day, meal: randomMeal.Meal, type: randomMeal.Type });
     }
@@ -149,7 +134,8 @@ export const Plan = () => {
             thursday: thursday,
             friday: friday,
             saturday: saturday,
-            sunday: sunday}
+            sunday: sunday
+        }
         await updateDoc(userDoc, newFields);
     }
 
