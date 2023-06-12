@@ -10,7 +10,17 @@ import {
     deleteDoc,
     doc,
   } from "firebase/firestore";
-import { Card, CardBody, CardFooter, Stack, Heading, Text, Divider, ButtonGroup, Button, Progress} from '@chakra-ui/react'
+import { 
+    Card,
+    CardBody, 
+    CardFooter, 
+    Stack, 
+    Heading, 
+    Text, 
+    Divider, 
+    ButtonGroup, 
+    Button, 
+    Spinner} from '@chakra-ui/react'
 
 export const Plan = () => {
     const [monday, setMonday] = useState({ name: "Monday", meal: "", type: "" });
@@ -187,6 +197,7 @@ export const Plan = () => {
             });
             setUserInfo(users);
             setLoading(false);
+            setRandom(meals[Math.floor(Math.random() * meals.length)]);
             if(userInfo.length > 0){
                 const dict = userInfo[0];
                 setMonday({ name: "Monday", meal:  dict['monday']['meal'], type:  dict['monday']['type'] });
@@ -202,12 +213,11 @@ export const Plan = () => {
     }, [loading]);
 
     if (loading) {
-        return <h1>loading firebase data for user... </h1>
+        return (<>
+        <h1>loading firebase data for user... </h1>
+        <Spinner />
+        </>);
     }
-
-
-    //trying to do draggable
-
 
 
     function start(d) {
@@ -229,11 +239,7 @@ export const Plan = () => {
     }
 
     return (
-        <> <div>
-            <br/>
-            <Text><b>Week planned:</b></Text>
-            <Progress hasStripe value={50} />
-            </div>
+        <>
             <br/>
             <div className='edit'>
                 <Stack w="100%">
@@ -248,7 +254,7 @@ export const Plan = () => {
                                             <Text fontSize='sm'>
                                                 {day.type}   
                                             </Text>
-                                            <Text color='blue.600' fontSize='2xl'>
+                                            <Text color='blue.600' fontSize='xl'>
                                                 {day.meal}
                                             </Text>
                                         </Stack>
