@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import firestore from 'firebase/compat/firestore';
 import { firebase, db } from './firebase';
-import { Card, CardBody, CardFooter, Stack, Heading, Text, Divider, ButtonGroup, Button, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import { Card, CardBody, CardFooter, Stack, Heading, Text, Divider, ButtonGroup, Button, Tabs, TabList, TabPanels, Tab, TabPanel, Input } from '@chakra-ui/react'
 
 import '../App.css';
 
@@ -10,6 +10,8 @@ import '../App.css';
 export const Form = ({ day, handle, hide }) => {
     const [loading, setLoading] = useState(true);
     const [meals, setMeals] = useState([]);
+
+    const [searchWord, setSearchWord] = useState("");
 
     useEffect(() => {
         const getMealsFromFirebase = [];
@@ -78,6 +80,7 @@ export const Form = ({ day, handle, hide }) => {
                     <Tab>Vegan</Tab>
                     <Tab>Vegetarian</Tab>
                     <Tab>Other</Tab>
+                    <Tab>Search</Tab>
                 </TabList>
 
                 <TabPanels>
@@ -125,6 +128,41 @@ export const Form = ({ day, handle, hide }) => {
                     <TabPanel>
                     {/* Other */}
                         {sectionChoice('other')}
+                    </TabPanel>
+                    <TabPanel>
+                        {/*search */}
+                        <Input type="text" placeholder="type in name of meal..." value={searchWord} onChange={(e)=> setSearchWord(e.target.value)}/>
+                        <Stack direction='row' wrap='wrap' gap="10">
+                        {meals.length > 0 ? (
+                            meals.map((meal) => {
+                                if(meal.Meal.includes(searchWord)){
+                                    return(
+                                    <div key={meal.key}>
+                                        <Card maxW='sm' minW='xs' width='xs' h="3xs">
+                                            <CardBody>
+                                                <Stack mt='6' spacing='3'>
+                                                    <Heading size='md'>{meal.Meal}</Heading>
+                                                    <Text fontSize='sm'>
+                                                        <i>{meal.Type}</i>
+                                                    </Text>
+                                                </Stack>
+                                            </CardBody>
+                                            <Divider />
+                                            <CardFooter>
+                                                <ButtonGroup spacing='2'>
+                                                    <Button variant='solid' colorScheme='blue' size='sm' onClick={() => handle(day, { name: day, meal: meal.Meal, type: meal.Type })}>
+                                                        Add
+                                                    </Button>
+                                                </ButtonGroup>
+                                            </CardFooter>
+                                        </Card>
+                                    </div>);
+                                }
+                                }
+                        
+                            ))
+                            : (<h1>no meals in db</h1>)}
+                    </Stack>
                     </TabPanel>
                 </TabPanels>
             </Tabs>
