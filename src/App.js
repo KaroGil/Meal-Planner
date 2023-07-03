@@ -40,7 +40,7 @@ function App() {
         {/* {user ? <Header signIn={SignIn} loginState={user} signOut={SignOut} name={auth.currentUser.displayName} isClicked={click} plan={}/> : <Header signIn={SignIn} loginState={user} signOut={SignOut}/> } */}
         
         {/* If user loged in the homesignedin page will show with the signout propmt, if not the homenotsignedin with a signin promopt will be shown */}
-        {user ?  <HomeSignedIn name={auth.currentUser.displayName} signOut={SignOut}/> : <HomeNotSignedIn signIn={SignIn}/>}
+        {user ?  <HomeSignedIn name={auth.currentUser.displayName} SignOut={SignOut}/> : <HomeNotSignedIn signIn={SignIn}/>}
         {/* Footer */}
         <Footer />
       </div>
