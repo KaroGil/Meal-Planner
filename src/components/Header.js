@@ -44,7 +44,7 @@ export const Header = ({ signIn, signOut, loginState, name, isClicked, hide}) =>
                             </Stack>
                         </FormControl>
 
-                        <DropDownMenu name={name} isClicked={isClicked} signOut={signOut()} hide={hide}/>
+                        <DropDownMenu name={name} isClicked={isClicked} signOut={signOut} hide={hide}/>
                     </Stack>
                     : <Button colorScheme='red' onClick={() => signIn()}>Sign in</Button>}
         </div>
